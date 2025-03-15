@@ -1,0 +1,71 @@
+
+server:
+  port: 8086
+  logging:
+  level:
+    org.springframework.security: TRACE
+
+# Nombre de la aplicación
+spring:
+  application:
+    name: empleoPrueba
+
+# Configuración general (compartida entre todos los ambientes)
+  datasource:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update # Crea o actualiza las tablas automáticamente
+  profiles:
+    active: dev
+  
+
+# Configuración para los diferentes perfiles
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:file:./data/clientes-db-dev
+    username: sa
+    password:
+  logging:
+    file:
+      name: logs/dev/app-dev.log
+    level:
+      root: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    url: jdbc:h2:file:./data/clientes-db-qa
+    username: sa
+    password:
+  logging:
+    file:
+      name: logs/qa/app-qa.log
+    level:
+      root: info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:h2:file:./data/clientes-db-prod
+    username: sa
+    password:
+  logging:
+    file:
+      name: logs/prod/app-prod.log
+    level:
+      root: error
